@@ -40,12 +40,21 @@
 		<section v-show="showBoxscore" class="boxscoreContainer">
 
 			<div class="boxscoreMenu">
-				<button @click="homeTeamHandler">Home Team</button>
-				<button @click="awayTeamHandler">Away Team</button>
+				<button
+					:class="showHomeTeam ? 'boxscoreTeamBtnSelected' : 'boxscoreTeamBtnUnselected'"
+					class="boxscoreTeamBtn"
+					@click="homeTeamHandler">{{ masterInfo.homeTeam.city }} {{ masterInfo.homeTeam.name }}
+				</button>
+				<button
+					:class="showAwayTeam ? 'boxscoreTeamBtnSelected' : 'boxscoreTeamBtnUnselected'"
+					class="boxscoreTeamBtn"
+					@click="awayTeamHandler">{{ masterInfo.awayTeam.city }} {{ masterInfo.awayTeam.name }}
+				</button>
 			</div>
 
 			<article class="boxscorePlayerHolder">
-				<h1 style="text-align:center">Boxscore</h1>
+				<h1 v-if="showHomeTeam" style="text-align:center; font-size:24pt">{{ masterInfo.homeTeam.city }} {{ masterInfo.homeTeam.name }} Stats</h1>
+				<h1 v-if="showAwayTeam" style="text-align:center; font-size:24pt">{{ masterInfo.awayTeam.city }} {{ masterInfo.awayTeam.name }} Stats</h1>
 				<div v-show="showHomeTeam" class="homePlayersHolder">
 
 					<header class="skaterLegend statsGrid">
@@ -59,8 +68,8 @@
 
 					<header class="goalieLegend goalieStatsGrid">
 						<p>Goalie</p>
-						<p>SA</p>
 						<p>GA</p>
+						<p>SA</p>
 						<p>SV</p>
 						<p>SV%</p>
 						<p>PIMs</p>
@@ -277,11 +286,15 @@ export default {
 	margin: 0px auto;
 	background-color: #ccc;
 	/* border-radius: 25px; */
-	padding: 10px 15px;
+	padding: 20px 15px;
 
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	box-shadow: 0 2px 10px rgba(0, 0, 0, 0.25);
+	position: sticky;
+	top: 0px;
+	z-index: 10;
 }
 
 .gameBreakdownMenu {
@@ -291,15 +304,18 @@ export default {
 .halfBtn {
 	width: 50%;
 	text-align: center;
-	padding: 10px 0;
+	padding: 15px 0 10px 0;
 	font-size: 16pt;
 	cursor: pointer;
 }
 
 .halfBtnUnselected {
-	background-color: rgb(170, 170, 170);
+	background-color: #f2f2f2;
 	box-shadow: inset 0px -5px 10px -1px rgba(0, 0, 0, 0.25);
 	font-weight: normal;
+}
+.halfBtnUnselected:hover {
+	background-color: white;
 }
 
 .halfBtnSelected {
@@ -369,6 +385,39 @@ export default {
 	align-items: center;
 }
 
+.boxscoreMenu {
+	padding: 10px 0;
+	margin: 40px 0 10px 0;
+	display: flex;
+	justify-content: space-between;
+}
+
+.boxscoreTeamBtn {
+	padding: 10px;
+	margin: 0 10px;
+	font-size: 12pt;
+	border: none;
+	outline: none;
+	border-radius: 5px;
+	cursor:pointer;
+}
+
+.boxscoreTeamBtnSelected {
+	background-color: dodgerblue;
+	border: 2px solid rgb(88, 171, 255);
+	color: white;
+}
+.boxscoreTeamBtnUnselected {
+	background-color: #f2f2f2;
+	color: #333;
+	border: 2px solid #ccc;
+	box-shadow: inset 0px 0px 5px rgba(0, 0, 0, 0.25);
+}
+.boxscoreTeamBtnUnselected:hover {
+	background-color: white;
+	box-shadow: inset 0px 0px 5px rgba(0, 0, 0, 0.15);
+}
+
 .boxscorePlayerHolder {
 	width: 100%;
 }
@@ -376,8 +425,8 @@ export default {
 .homePlayersHolder, .awayPlayersHolder {
 	display: flex;
 	flex-direction: column;
-	width: 60%;
-	margin: 0 auto;
+	/* width: 60%; */
+	margin: 5px 0 40px 0;
 }
 
 .skaterLegend, .goalieLegend {
@@ -386,7 +435,7 @@ export default {
 
 	background-color: #333;
 	color: #eee;
-	padding: 5px 8px;
+	padding: 10px 8px;
 	font-weight: bold;
 }
 

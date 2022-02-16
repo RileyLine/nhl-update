@@ -100,8 +100,6 @@ export default {
 				// Start time of game
 				this.masterInfo.gameStart = new Date(data.gameData.datetime.dateTime).toLocaleTimeString(navigator.language, {hour: '2-digit', minute:'2-digit'});
 
-				console.log(this.masterInfo.gameStatus)
-
 				if (this.masterInfo.gameStart[0] == "0") {
 					// Mutate the gameStart to get rid of the preceding 0
 					this.masterInfo.gameStart = this.masterInfo.gameStart.slice(1, this.masterInfo.gameStart.length)
